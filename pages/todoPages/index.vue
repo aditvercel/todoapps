@@ -32,8 +32,16 @@
     <v-row v-if="tasks.length > 0" class="mt-4">
       <v-col v-for="task in tasks" :key="task.id" cols="12" md="6">
         <v-card class="pa-4">
-          <v-card-title>
+          <v-card-title style="display: flex; justify-content: space-between">
             <span class="headline">{{ task.id }}: {{ task.name }}</span>
+            <v-btn
+              icon
+              color="red"
+              @click="deleteChecklist(task.id)"
+              size="small"
+            >
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
           </v-card-title>
 
           <v-list v-if="task.items && task.items.length > 0" class="mt-2">
@@ -179,6 +187,21 @@ export default {
         console.error("Error fetching tasks:", error.response?.data || error);
       }
     },
+    async deleteChecklist(checklistId) {
+      try {
+        await axios.delete(
+          `http://94.74.86.174:8080/api/checklist/${checklistId}`,
+          { headers: { Authorization: `Bearer ${this.userAuthToken}` } }
+        );
+        this.fetchTasks(); // Refresh the task list after deletion
+      } catch (error) {
+        console.error(
+          "Error deleting checklist:",
+          error.response?.data || error
+        );
+      }
+    },
+
     showAddTaskDialog() {
       this.taskSubject = "";
       this.editing = false;
