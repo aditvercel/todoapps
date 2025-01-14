@@ -1,4 +1,3 @@
-<!-- pages/index.vue -->
 <template>
   <div style="display: grid; height: 100%; background-color: white; gap: 10px">
     <div
